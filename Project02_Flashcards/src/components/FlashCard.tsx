@@ -19,7 +19,7 @@ function FlashCard({ card, isFlipped, onFlip }: FlashCardProps) {
             <p className={`
                 text-sm sm:text-base md:text-lg
                 leading-relaxed
-                ${isFlipped ? "text-gray-600" : "text-gray-900 font-medium"}
+                ${isFlipped ? "text-gray-600" : "text-gray-900 font-medium text-center"}
             `}>
                 {isFlipped ? card.answer : card.question}
             </p>
