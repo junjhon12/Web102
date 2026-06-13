@@ -1,73 +1,93 @@
-# React + TypeScript + Vite
+# Fullstack Interview Flashcards
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive flashcard app for studying fullstack engineering interview topics. Built with React, TypeScript, and Tailwind CSS.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- **Flip interaction** — click any card to toggle between the question and answer
+- **Random next card** — the Next button selects a random card from the deck to keep study sessions non-linear
+- **Progress bar** — tracks your position through the deck at a glance
+- **Responsive layout** — adapts from mobile through widescreen using Tailwind breakpoints
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Topics Covered
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The deck includes 15 cards across these areas:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Area | Topics |
+|---|---|
+| **Frontend** | SSR vs CSR, React hooks, Virtual DOM, useMemo / useCallback |
+| **APIs** | REST vs GraphQL, HTTP status codes, CORS |
+| **Backend** | Node.js event loop, TCP vs UDP |
+| **Databases** | Indexing, SQL vs NoSQL, Normalization |
+| **Security** | Authentication vs Authorization, JWTs |
+| **DevOps** | CI/CD |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/your-username/flashcard-app.git
+cd flashcard-app
+
+# Install dependencies
+npm install
+
+# Start the dev server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The app will be running at `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project Structure
+
 ```
+src/
+├── components/
+│   ├── FlashCard.tsx        # Single card display with flip logic
+│   └── FlashCardDeck.tsx    # Deck container, navigation, progress bar
+├── data/
+│   └── cards.ts             # Card data (questions + answers)
+├── App.tsx                  # Root layout and header
+├── App.css                  # Tailwind import
+└── main.tsx                 # React entry point
+```
+
+---
+
+## Adding Cards
+
+Open `src/data/cards.ts` and add a new object to the `cards` array:
+
+```ts
+{
+    id: 16,
+    question: "Your question here?",
+    answer: "Your answer here."
+}
+```
+
+Cards are automatically picked up by the deck — no other changes needed.
+
+---
+
+## Built With
+
+- [React](https://react.dev) — UI framework
+- [TypeScript](https://www.typescriptlang.org) — type safety
+- [Vite](https://vitejs.dev) — build tool and dev server
+- [Tailwind CSS](https://tailwindcss.com) — utility-first styling
