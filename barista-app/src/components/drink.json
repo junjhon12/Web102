@@ -1,0 +1,4 @@
+
+
+setCurrentDrink(drinksJson.drinks[randomDrinkIndex].name);
+setTrueRecipe(drinksJson.drinks[randomDrinkIndex].ingredients);
