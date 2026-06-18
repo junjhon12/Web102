@@ -1,1 +1,46 @@
 @import "tailwindcss"
+
+.container, .mini-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.container {
+  align-items: flex-start;
+  margin: auto;
+  position: relative;
+}
+
+.mini-container {
+  flex-direction: column;
+  margin: 50px;
+}
+
+.answer-space {
+  background-color: #f0f0f0; /* light gray default */
+  width: 150px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.correct {
+  background-color: #c8e6c9; /* Green */
+  color: #2e7d32;
+  border: 2px solid #2e7d32;
+}
+
+.wrong {
+  background-color: #ffcdd2; /* Red */
+  color: #c62828;
+  border: 2px solid #c62828;
+}
+
+li {
+  list-style: none;
+  margin-bottom: 10px;
+}
