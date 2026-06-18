@@ -21,4 +21,4 @@ const RecipeChoices = ({ handleChange, label, choices, checked }) => {
     );
 };
 
-export default RecipeChoices;
+export default RecipeChoices

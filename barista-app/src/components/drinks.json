@@ -1,0 +1,22 @@
+{
+  "drinks": [
+    {
+      "name": "Mocha",
+      "ingredients": {
+        "temperature": "hot",
+        "syrup": "mocha",
+        "milk": "cow",
+        "blended": "no"
+      }
+    },
+    {
+      "name": "Iced Vanilla Latte",
+      "ingredients": {
+        "temperature": "cold",
+        "syrup": "vanilla",
+        "milk": "cow",
+        "blended": "no"
+      }
+    }
+  ]
+}
