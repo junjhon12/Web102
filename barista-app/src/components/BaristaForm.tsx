@@ -12,6 +12,7 @@ const BaristaForm = () => {
 
   const [currentDrink, setCurrentDrink] = useState("");
   const [trueRecipe, setTrueRecipe] = useState<any>({});
+
   const [correct_temp, setCheckedTemperature] = useState("");
   const [correct_syrup, setCheckedSyrup] = useState("");
   const [correct_milk, setCheckedMilk] = useState("");
@@ -72,20 +73,32 @@ const BaristaForm = () => {
     }
   };
 
+  // Helper function to dynamically apply Tailwind colors
+  const getAnswerSpaceClass = (status: string) => {
+    const baseClass = "w-36 h-10 flex items-center justify-center rounded-md font-bold mb-4 border-2 transition-colors ";
+    if (status === "correct") return baseClass + "bg-green-100 text-green-800 border-green-500";
+    if (status === "wrong") return baseClass + "bg-red-100 text-red-800 border-red-500";
+    return baseClass + "bg-gray-100 border-transparent text-gray-800";
+  };
+
   return (
     <div>
-      <h2>Hi, I'd like to order a:</h2>
-      <div className="drink-container">
-        <h2 className="mini-header">{currentDrink}</h2>
-        <button type="button" className="button newdrink" onClick={onNewDrink}>
+      <h2 className="text-xl font-semibold mb-4">Hi, I'd like to order a:</h2>
+      <div className="flex items-center justify-center gap-4 mb-8">
+        <h2 className="text-3xl font-bold text-blue-700">{currentDrink}</h2>
+        <button 
+          type="button" 
+          className="p-2 rounded-full hover:bg-gray-200 transition-colors cursor-pointer text-xl" 
+          onClick={onNewDrink}
+        >
           🔄
         </button>
       </div>
 
-      <form className="container">
-        <div className="mini-container">
-          <h3>Temperature</h3>
-          <div className={`answer-space ${correct_temp}`} id={correct_temp}>
+      <form className="flex justify-evenly items-start mx-auto relative max-w-4xl">
+        <div className="flex flex-col items-center mx-4">
+          <h3 className="text-lg font-semibold mb-2">Temperature</h3>
+          <div className={getAnswerSpaceClass(correct_temp)}>
             {inputs["temperature"]}
           </div>
           <RecipeChoices
@@ -101,9 +114,9 @@ const BaristaForm = () => {
           />
         </div>
 
-        <div className="mini-container">
-          <h3>Syrup</h3>
-          <div className={`answer-space ${correct_syrup}`} id={correct_syrup}>
+        <div className="flex flex-col items-center mx-4">
+          <h3 className="text-lg font-semibold mb-2">Syrup</h3>
+          <div className={getAnswerSpaceClass(correct_syrup)}>
             {inputs["syrup"]}
           </div>
           <RecipeChoices
@@ -119,9 +132,9 @@ const BaristaForm = () => {
           />
         </div>
 
-        <div className="mini-container">
-          <h3>Milk</h3>
-          <div className={`answer-space ${correct_milk}`} id={correct_milk}>
+        <div className="flex flex-col items-center mx-4">
+          <h3 className="text-lg font-semibold mb-2">Milk</h3>
+          <div className={getAnswerSpaceClass(correct_milk)}>
             {inputs["milk"]}
           </div>
           <RecipeChoices
@@ -137,9 +150,9 @@ const BaristaForm = () => {
           />
         </div>
 
-        <div className="mini-container">
-          <h3>Blended</h3>
-          <div className={`answer-space ${correct_blended}`} id={correct_blended}>
+        <div className="flex flex-col items-center mx-4">
+          <h3 className="text-lg font-semibold mb-2">Blended</h3>
+          <div className={getAnswerSpaceClass(correct_blended)}>
             {inputs["blended"]}
           </div>
           <RecipeChoices
@@ -156,13 +169,23 @@ const BaristaForm = () => {
         </div>
       </form>
 
-      <button type="button" className="button submit" onClick={onCheckAnswer}>
-        Check Answer
-      </button>
+      <div className="mt-10">
+        <button 
+          type="button" 
+          className="px-6 py-3 mx-2 text-base font-bold text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 cursor-pointer" 
+          onClick={onCheckAnswer}
+        >
+          Check Answer
+        </button>
 
-      <button type="button" className="button newdrink" onClick={onNewDrink}>
-        New Drink
-      </button>
+        <button 
+          type="button" 
+          className="px-6 py-3 mx-2 text-base font-bold text-white bg-blue-600 border border-blue-600 rounded-lg shadow-sm hover:bg-blue-700 cursor-pointer" 
+          onClick={onNewDrink}
+        >
+          New Drink
+        </button>
+      </div>
     </div>
   );
 };
