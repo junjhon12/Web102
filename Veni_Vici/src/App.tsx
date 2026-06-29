@@ -1,122 +1,98 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import Discover from "./components/Discover";
+import BanList from "./components/BanList";
+import History from "./components/History";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+export interface Pokemon {
+  id: number;
+  name: string;
+  image: string;
+  types: string[];
+  weight: string;
+  height: string;
 }
 
-export default App
+function App() {
+  // 2. Strongly type our state variables
+  const [currentPoke, setCurrentPoke] = useState<Pokemon | null>(null);
+  const [banList, setBanList] = useState<string[]>([]);
+  const [history, setHistory] = useState<Pokemon[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const fetchRandomPokemon = async () => {
+    setLoading(true);
+    let found = false;
+    let attempts = 0;
+
+    while (!found && attempts < 20) {
+      attempts++;
+      const randomId = Math.floor(Math.random() * 1025) + 1;
+
+      try {
+        const response = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${randomId}`,
+        );
+        const data = await response.json();
+
+        const types: string[] = data.types.map(
+          (t: { type: { name: string } }) => t.type.name,
+        );
+        const weight = `${data.weight} hg`;
+        const height = `${data.height} dm`;
+
+        const attributes = [...types, weight, height];
+        const isBanned = attributes.some((attr) => banList.includes(attr));
+
+        if (!isBanned) {
+          const newPoke: Pokemon = {
+            id: data.id,
+            name: data.name,
+            image:
+              data.sprites.front_default ||
+              data.sprites.other["official-artwork"].front_default,
+            types: types,
+            weight: weight,
+            height: height,
+          };
+
+          setCurrentPoke(newPoke);
+          setHistory((prevHistory) => [newPoke, ...prevHistory]);
+          found = true;
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    if (!found) {
+      alert(
+        "Too many attributes banned! Unban some items to discover more Pokémon.",
+      );
+    }
+    setLoading(false);
+  };
+
+  const toggleBan = (attribute: string) => {
+    if (banList.includes(attribute)) {
+      setBanList(banList.filter((item) => item !== attribute));
+    } else {
+      setBanList([...banList, attribute]);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-900 text-white font-sans flex flex-col md:flex-row">
+      <History history={history} />
+      <Discover
+        currentPoke={currentPoke}
+        fetchRandomPokemon={fetchRandomPokemon}
+        toggleBan={toggleBan}
+        loading={loading}
+      />
+      <BanList banList={banList} toggleBan={toggleBan} />
+    </div>
+  );
+}
+
+export default App;
